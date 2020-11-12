@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-
 import { db } from './models/index.js';
+import { gradeRouter } from './routes/gradeRouter.js';
 
 (async () => {
   try {
@@ -11,6 +11,7 @@ import { db } from './models/index.js';
       useUnifiedTopology: true,
     });
   } catch (error) {
+    console.error(error);
     process.exit();
   }
 })();
@@ -30,4 +31,8 @@ app.get('/', (req, res) => {
   res.send('API em execucao');
 });
 
-app.listen(process.env.PORT || 8081, () => {});
+app.use(gradeRouter);
+
+app.listen(process.env.PORT || 8081, () => {
+  console.log(`SERVER RUNNING at ${process.env.PORT}`);
+});
