@@ -29,7 +29,7 @@ const findAll = async (req, res) => {
     : {};
 
   try {
-    const grade = await getStudent({ name });
+    const grade = await Student.find({});
     res.send(grade);
     logger.info(`GET /grade`);
   } catch (error) {
@@ -45,7 +45,7 @@ const findOne = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const one = await getStudent({ _id: id });
+    const one = await Student.find({ _id: id });
     res.send(one);
     logger.info(`GET /grade - ${id}`);
   } catch (error) {
