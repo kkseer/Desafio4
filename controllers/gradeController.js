@@ -29,7 +29,7 @@ const findAll = async (req, res) => {
     : {};
 
   try {
-    const grade = await Student.find({});
+    const grade = await Student.find(condition);
     res.send(grade);
     logger.info(`GET /grade`);
   } catch (error) {
