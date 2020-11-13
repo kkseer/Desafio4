@@ -127,24 +127,4 @@ const removeAll = async (req, res) => {
   }
 };
 
-const findPag = async (req, res) => {
-  const page = +req.query.page || 1;
-
-  const limit = +req.query.limit || 3;
-
-  const skip = (page - 1) * limit;
-
-  try {
-    const data = await Student.find().skip(skip).limit(limit);
-
-    res.send(data);
-    logger.info(`GET /grade`);
-  } catch (error) {
-    res
-      .status(500)
-      .send({ message: error.message || 'Erro ao listar todos os documentos' });
-    logger.error(`GET /grade - ${JSON.stringify(error.message)}`);
-  }
-};
-
-export default { create, findAll, findOne, update, remove, removeAll, findPag };
+export default { create, findAll, findOne, update, remove, removeAll };
