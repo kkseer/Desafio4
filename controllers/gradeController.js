@@ -45,7 +45,7 @@ const findOne = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const one = await Student.find({ _id: id });
+    const one = await Student.findById(id);
     if (one.length < 1) {
       res.status(404).send({ message: `Grade do id ${id} nao encontrado` });
     } else {
@@ -92,9 +92,7 @@ const remove = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const removeone = await Student.findByIdAndDelete({
-      _id: id,
-    });
+    const removeone = await Student.findByIdAndRemove(id);
     if (!removeone) {
       res.status(404).send('Documento nao encontrado na colecao');
     } else {
