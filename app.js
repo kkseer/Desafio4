@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { db } from './models/index.js';
 import { gradeRouter } from './routes/gradeRouter.js';
+import { logger } from './config/logger.js';
 
 (async () => {
   try {
@@ -10,8 +11,10 @@ import { gradeRouter } from './routes/gradeRouter.js';
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+    logger.info('Conectado ao banco de dados');
   } catch (error) {
-    console.error(error);
+    logger.error(`Erro ao conectar no banco de dados! ${error}`);
+
     process.exit();
   }
 })();
@@ -23,7 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://desafio4front.herokuapp.com/',
   })
 );
 

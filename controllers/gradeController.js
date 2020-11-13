@@ -46,7 +46,12 @@ const findOne = async (req, res) => {
 
   try {
     const one = await Student.find({ _id: id });
-    res.send(one);
+    if (one.length < 1) {
+      res.status(404).send({ message: `Grade do id ${id} nao encontrado` });
+    } else {
+      res.send(data);
+    }
+
     logger.info(`GET /grade - ${id}`);
   } catch (error) {
     res.status(500).send({ message: 'Erro ao buscar o Grade id: ' + id });
@@ -68,8 +73,13 @@ const update = async (req, res) => {
     const one = await Student.findByIdAndUpdate({ _id: id }, req.body, {
       new: true,
     });
-    res.send(one);
-
+    if (one.length < 1) {
+      res
+        .status(404)
+        .send({ message: `Grade do id ${id} nao encontrado para atualizar` });
+    } else {
+      res.send({ message: 'Grade atualizado com sucesso' });
+    }
     logger.info(`PUT /grade - ${id} - ${JSON.stringify(req.body)}`);
   } catch (error) {
     res.status(500).send({ message: 'Erro ao atualizar a Grade id: ' + id });
@@ -103,10 +113,38 @@ const removeAll = async (req, res) => {
   try {
     const all = Student.deleteMany({});
     logger.info(`DELETE /grade`);
+    if (data.length < 1) {
+      res.status(404).send({ message: `Nao existe grade para exclusao` });
+    } else {
+      res.send({
+        message: `Grades excluidos`,
+      });
+    }
+    res.status(200);
   } catch (error) {
     res.status(500).send({ message: 'Erro ao excluir todos as Grades' });
     logger.error(`DELETE /grade - ${JSON.stringify(error.message)}`);
   }
 };
 
-export default { create, findAll, findOne, update, remove, removeAll };
+const findPag = async (req, res) => {
+  const page = +req.query.page || 1;
+
+  const limit = +req.query.limit || 3;
+
+  const skip = (page - 1) * limit;
+
+  try {
+    const data = await Grade.find().skip(skip).limit(limit);
+
+    res.send(data);
+    logger.info(`GET /grade`);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: error.message || 'Erro ao listar todos os documentos' });
+    logger.error(`GET /grade - ${JSON.stringify(error.message)}`);
+  }
+};
+
+export default { create, findAll, findOne, update, remove, removeAll, findPag };
