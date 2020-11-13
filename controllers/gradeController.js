@@ -135,7 +135,7 @@ const findPag = async (req, res) => {
   const skip = (page - 1) * limit;
 
   try {
-    const data = await Grade.find().skip(skip).limit(limit);
+    const data = await Student.find().skip(skip).limit(limit);
 
     res.send(data);
     logger.info(`GET /grade`);
