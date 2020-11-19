@@ -1,32 +1,21 @@
 export default (mongoose) => {
   const schema = mongoose.Schema({
-    name: {
-      type: String,
-      require: true,
-    },
-
-    subject: {
-      type: String,
-      require: true,
-    },
-
-    type: {
-      type: String,
-      require: true,
-    },
-    value: {
-      type: Number,
-      require: true,
-      //valida se a nota inserida e menor que zero
-      min: 0,
-    },
-    lastModified: {
-      type: Date,
-      default: Date.now,
-    },
+    name: String,
+    subject: String,
+    type: String,
+    value: { type: Number, min: 0 },
+    lastModified: { type: Date, default: Date.now },
   });
 
-  const studentModel = mongoose.model('grades', schema);
+  schema.method('toJSON', function () {
+    const { __v, _id, ...object } = this.toObject();
 
-  return studentModel;
+    object.id = _id;
+
+    return object;
+  });
+
+  const Grade = mongoose.model('grades', schema);
+
+  return Grade;
 };
