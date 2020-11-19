@@ -49,7 +49,7 @@ const findOne = async (req, res) => {
     if (one.length < 1) {
       res.status(404).send({ message: `Grade do id ${id} nao encontrado` });
     } else {
-      res.send(data);
+      res.send(one);
     }
 
     logger.info(`GET /grade - ${id}`);
